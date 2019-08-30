@@ -106,5 +106,4 @@ class log:
 
 
 if __name__ == '__main__':
-    log.info(111)
-    log.error(123)
+    pass

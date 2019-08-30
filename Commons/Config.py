@@ -36,7 +36,3 @@ class ConfigLoader:
     def getfloat(self, section, option):  # 返回float类型的值
         # 根据section，option 来取到配置的值
         return self.conf.getfloat(section, option)
-
-
-if __name__ == '__main__':
-    pass
