@@ -1,4 +1,5 @@
 from Commons import Contans
+from Commons import LogManagement
 import logging
 import os
 import time
@@ -35,30 +36,11 @@ def remove_handler(levels):
     # logger.addHandler(Log.report_handler)
 
 
-def get_log_dir():  # 获取当天的日志存放目录
-    log_dir = os.path.join(Contans.text_log, get_current_day())
-    if not os.path.isdir(log_dir):  # 判断是否存在
-        os.makedirs(log_dir)  # 不存在就创建
-        # 删除7天之前的全部日志文件 ,放这里减少调用提升代码性能
-        delect_log_dir(logs_path=Contans.text_log)
-    return log_dir  # 存在就直接返回
-
-
-def delect_log_dir(logs_path):  # 删除n天之前的全部日志文件
-    folders = os.listdir(logs_path)
-    # 循环指定路径取出指定路径下全部的文件夹名称
-    for folder in folders:
-        # 判断文件夹是不是七天之前创建的如果是就删除
-        if int(folder) < int(get_current_day()) - Contans.log_time:
-            shutil.rmtree(os.path.join(logs_path, folder))
-
-
-def get_current_day():  # 获取当天
-    return time.strftime('%Y%m%d', time.localtime(time.time()))
 
 
 class log:
-    log_dir = get_log_dir()
+    log_management = LogManagement.LogManagement()
+    log_dir = log_management.get_log_dir()
     # 指定输出文件
     log_file = os.path.join(log_dir, 'info.log')
     error_file = os.path.join(log_dir, 'error.log')
@@ -106,4 +88,5 @@ class log:
 
 
 if __name__ == '__main__':
-    pass
+    log.info(123)
+    log.error(123)
