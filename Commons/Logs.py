@@ -66,7 +66,7 @@ class log:
     # 报表日志输出 改为使用allure
     # report_handler = logging.StreamHandler(HTMLTestRunnerNew.stdout_redirector)
     # report_handler.setLevel('INFO')
-    # report_handler.setFormatter(formatter)
+    # report_handler.setFormatter(formatter)·
 
     @staticmethod
     def debug(msg):
