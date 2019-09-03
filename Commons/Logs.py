@@ -36,12 +36,10 @@ def remove_handler(levels):
     # logger.addHandler(Log.report_handler)
 
 
-
-
 class log:
-    #实例化文件管理类
+    # 实例化文件管理类
     log_management = LogManagement.LogManagement()
-    #调用创建文件
+    # 调用创建文件
     log_dir = log_management.get_log_dir()
     # 指定输出文件
     log_file = os.path.join(log_dir, 'info.log')

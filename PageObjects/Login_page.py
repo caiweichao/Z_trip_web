@@ -16,7 +16,7 @@ class loginPage:
 
     # 获取错误提示-用户名密码错误
     def error_msg(self):
-        WebDriverWait(self.driver, 20).\
+        WebDriverWait(self.driver, 20). \
             until(EC.visibility_of_element_located((By.XPATH, '//div[text()="用户名密码错误"]')))
-        ele = self.driver.find_element_by_xpath('//div[text()="用户名密码错误"]').text
-        return ele
+        element = self.driver.find_element_by_xpath('//div[text()="用户名密码错误"]').text
+        return element
