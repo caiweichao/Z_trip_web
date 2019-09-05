@@ -11,12 +11,12 @@ class LogManagement:
     def get_current_day(self):  # 获取当天
         return time.strftime('%Y%m%d', time.localtime(time.time()))
 
-    def get_log_dir(self):  # 获取当天的日志存放目录
-        log_dir = os.path.join(Contans.text_log, self.get_current_day())
+    def get_log_dir(self,logs_path):  # 获取当天的日志存放目录
+        log_dir = os.path.join(logs_path, self.get_current_day())
         if not os.path.isdir(log_dir):  # 判断是否存在
             os.makedirs(log_dir)  # 不存在就创建
             # 删除7天之前的全部日志文件 ,放这里减少调用提升代码性能
-            self.delect_log_dir(logs_path=Contans.text_log)
+            self.delect_log_dir(logs_path=logs_path)
         return log_dir  # 存在就直接返回
 
     def delect_log_dir(self, logs_path):  # 删除n天之前的全部日志文件

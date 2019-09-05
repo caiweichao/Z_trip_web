@@ -39,8 +39,8 @@ def remove_handler(levels):
 class log:
     # 实例化文件管理类
     log_management = LogManagement.LogManagement()
-    # 调用创建文件
-    log_dir = log_management.get_log_dir()
+    # 调用创建文件,传参确认文字日志
+    log_dir = log_management.get_log_dir(logs_path=Contans.text_log)
     # 指定输出文件
     log_file = os.path.join(log_dir, 'info.log')
     error_file = os.path.join(log_dir, 'error.log')

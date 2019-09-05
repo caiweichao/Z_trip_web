@@ -45,3 +45,4 @@ class DoExcel:
 if __name__ == '__main__':
         do = DoExcel(filename="D:\Python_project\Z_trip_web\Demo\\123.xlsx")
         timu = do.get_timu('Sheet1')
+
