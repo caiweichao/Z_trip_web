@@ -32,3 +32,9 @@ pro_conf = os.path.join(conf_dir, 'PRO.ini')
 formatter = '%(asctime)s-%(filename)s-%(levelname)s-%(message)s'
 # 日志最大保存时间
 log_time = 7
+
+# ----------BasicPage维护参数------------
+# 最大的等待时间
+basic_timeout = 30
+# 寻找元素间隔时间
+basic_Polling_Interval = 0.5
