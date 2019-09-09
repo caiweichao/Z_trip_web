@@ -144,9 +144,13 @@ class BasicPage:
             raise e
 
     # 点击元素
+    def click_element(self):
+        pass
+
 
     # 输入文本内容
-
+    def input_text(self):
+        pass
     # 获取元素的文本内容
 
     # 异常截图并且存储
