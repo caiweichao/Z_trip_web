@@ -6,7 +6,7 @@ from Commons import Contans
 from selenium.common.exceptions import *
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 import time
 import datetime
@@ -26,7 +26,7 @@ class BasicPage:
             start_time = datetime.datetime.now().second
             # 默认超时等待时间为30秒,间隔0.5秒轮询一次可以根据配置文件修改超时时间和轮询时间
             WebDriverWait(self.driver, timeout=timeout, poll_frequency=Polling_Interval).until(
-                EC.visibility_of_element_located(locator))
+                ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
             log.info('元素已可见,共计等待:{}秒'.format(wait_time))
@@ -49,7 +49,7 @@ class BasicPage:
             start_time = datetime.datetime.now().second
             # 默认超时等待时间为30秒,间隔0.5秒轮询一次可以根据配置文件修改超时时间和轮询时间
             WebDriverWait(self.driver, timeout=timeout, poll_frequency=Polling_Interval).until(
-                EC.presence_of_element_located(locator))
+                ec.presence_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
             log.info("元素已经存在,共计等待:{}秒".format(wait_time))
@@ -71,7 +71,7 @@ class BasicPage:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
             WebDriverWait(self.driver, timeout=timeout, poll_frequency=Polling_Interval).until_not(
-                EC.visibility_of_element_located(locator))
+                ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
             log.info("元素已经消失不见,共计等待:{}秒".format(wait_time))
@@ -86,9 +86,24 @@ class BasicPage:
             log.error("等待或定位表达式异常\n {}".format(e))
 
     # 定位元素
-    def find_element(self, locator, type):
+    def find_element(self, model, locator, type='visible'):
+        """
+        :param model: 传参定位的是哪个页面 字符串形式
+        :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
+        :param type: visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :return:
+        """
+        # 判断元素定位使用的是那种等待方式
+        if type == 'visible':
+            self.wait_element_visible(locator)
+        elif type == 'notvisible':
+            self.wait_element_not_visible(locator)
+        elif type == 'exist':
+            self.wait_element_exist(locator)
+        else:
+            log.error('type参数传值异常,入参值为：{}'.format(type))
         try:
-            log.info('正在查找{}页面属性为: {} 的元素'.format(type,locator))
+            log.info('正在查找{}页面属性为: {} 的元素'.format(model, locator))
             # 元素定位传入动态参数
             self.driver.find_element(*locator)
         except Exception as e:
@@ -98,9 +113,35 @@ class BasicPage:
             self.save_webImg(tag_time=tag_time)
             log.error("查找元素失败,页面已经截图并且保存文件名:{}".format(tag_time))
             raise e
-    #定位一组元素
-    def find_elements(self,locator,type):
-        pass
+
+    # 定位一组元素
+    def find_elements(self, model, locator, type='visible'):
+        """
+        :param model: 传参定位的是哪个页面 字符串形式
+        :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
+        :param type: visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :return:
+        """
+        # 判断元素定位使用的是那种等待方式
+        if type == 'visible':
+            self.wait_element_visible(locator)
+        elif type == 'notvisible':
+            self.wait_element_not_visible(locator)
+        elif type == 'exist':
+            self.wait_element_exist(locator)
+        else:
+            log.error('type参数传值异常,入参值为：{}'.format(type))
+        try:
+            log.info('正在查找{}页面属性为: {} 的元素'.format(model, locator))
+            # 元素定位传入动态参数
+            self.driver.find_element(*locator)
+        except Exception as e:
+            # 获取超时时间戳
+            tag_time = time.time()
+            # 截图并且保存
+            self.save_webImg(tag_time=tag_time)
+            log.error("查找元素失败,页面已经截图并且保存文件名:{}".format(tag_time))
+            raise e
 
     # 点击元素
 
