@@ -88,8 +88,19 @@ class BasicPage:
     # 定位元素
     def find_element(self, locator, type):
         try:
+            log.info('正在查找{}页面属性为: {} 的元素'.format(type,locator))
             # 元素定位传入动态参数
             self.driver.find_element(*locator)
+        except Exception as e:
+            # 获取超时时间戳
+            tag_time = time.time()
+            # 截图并且保存
+            self.save_webImg(tag_time=tag_time)
+            log.error("查找元素失败,页面已经截图并且保存文件名:{}".format(tag_time))
+            raise e
+    #定位一组元素
+    def find_elements(self,locator,type):
+        pass
 
     # 点击元素
 
