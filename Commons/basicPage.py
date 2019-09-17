@@ -173,15 +173,15 @@ class BasicPage:
         # 创建图片存储文件夹如果存在就不创建,并且删除七天之前的图片文件夹
         imgdir = LogManagement().get_log_dir(logs_path=Contans.pt_log)
         # 图片文件名称= 文件夹路径+模块名称_当前时间的时间戳.png
-        imgPath = imgdir + "/{}".format(tag_time)
+        img_path = imgdir + "/{}".format(tag_time)
         try:
             # 尝试进行截图
-            self.driver.save_screenshot(imgPath)
-            log.info('截图成功,文件名称为: {} '.format(imgPath))
+            self.driver.save_screenshot(img_path)
+            log.info('截图成功,文件名称为: {} '.format(img_path))
         except Exception as e:
             log.error('截图失败请检查\n{}'.format(e))
             raise e
-        return imgPath
+        return img_path
 
 
 if __name__ == '__main__':
