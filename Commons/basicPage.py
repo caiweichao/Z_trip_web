@@ -96,11 +96,11 @@ class BasicPage:
         """
         # 判断元素定位使用的是那种等待方式
         if mode == 'visible':
-            self.wait_element_visible(locator)
+            self.wait_element_visible(model, locator)
         elif mode == 'notvisible':
-            self.wait_element_not_visible(locator)
+            self.wait_element_not_visible(model, locator)
         elif mode == 'exist':
-            self.wait_element_exist(locator)
+            self.wait_element_exist(model, locator)
         else:
             log.error('定位{}页面的元素:{},type参数传值异常,入参值为：{}'.format(model, locator, mode))
         try:
@@ -125,11 +125,11 @@ class BasicPage:
         """
         # 判断元素定位使用的是那种等待方式
         if mode == 'visible':
-            self.wait_element_visible(locator)
+            self.wait_element_visible(model, locator)
         elif mode == 'notvisible':
-            self.wait_element_not_visible(locator)
+            self.wait_element_not_visible(model, locator)
         elif mode == 'exist':
-            self.wait_element_exist(locator)
+            self.wait_element_exist(model, locator)
         else:
             log.error('定位{}页面的元素:{},type参数传值异常,入参值为：{}'.format(model, locator, mode))
         try:
@@ -147,6 +147,7 @@ class BasicPage:
 
     # 将等待操作的元素移动到可见区域
     def make_element_visible(self, model, locator, element, alignment='false'):
+
         '''
         :param model: 传参定位的是哪个页面 字符串形式
         :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
