@@ -19,8 +19,8 @@ class BasicPage:
         self.driver.get('https://www.baidu.com')
 
     # 等待元素可见
-    def wait_element_visible(self, locator):
-        log.info('等待元素: {}可见'.format(locator))
+    def wait_element_visible(self, model, locator):
+        log.info('等待页面:{}元素: {}可见'.format(model, locator))
         try:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
@@ -30,20 +30,20 @@ class BasicPage:
                 ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
-            log.info('元素已可见,共计等待:{}秒'.format(wait_time))
+            log.info('页面{}上的元素{}已可见,共计等待:{}秒'.format(model, locator, wait_time))
         except TimeoutException as e:
             # 获取超时时间戳
             tag_time = time.time()
             # 截图并且保存
             self.save_webimg(tag_time=tag_time)
-            log.error("等待元素超时,页面已经截图并且保存文件名:{}".format(tag_time))
+            log.error("页面:{},等待元素可见{}超时".format(model, locator))
             raise e
         except InvalidSelectorException as e:
-            log.error("等待或定位表达式异常\n {}".format(e))
+            log.error("页面:{},元素不可见或定位表达式:{}异常\n {}".format(model, locator, e))
 
     # 等待元素存在
-    def wait_element_exist(self, locator):
-        log.info('等待元素: {}存在'.format(locator))
+    def wait_element_exist(self, model, locator):
+        log.info('等待页面:{}元素: {}存在'.format(model, locator))
         try:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
@@ -53,20 +53,20 @@ class BasicPage:
                 ec.presence_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
-            log.info("元素已经存在,共计等待:{}秒".format(wait_time))
+            log.info('页面{}上的元素{}已存在,共计等待:{}秒'.format(model, locator, wait_time))
         except TimeoutException as e:
             # 获取超时时间戳
             tag_time = time.time()
             # 截图并且保存
             self.save_webimg(tag_time=tag_time)
-            log.error("等待元素超时,页面已经截图并且保存文件名:{}".format(tag_time))
+            log.error("页面:{},等待元素存在{}超时".format(model, locator))
             raise e
         except InvalidSelectorException as e:
-            log.error("等待或定位表达式异常\n {}".format(e))
+            log.error("页面:{},元素不存在或定位表达式:{}异常\n {}".format(model, locator, e))
 
     # 等待元素不可见
-    def wait_element_not_visible(self, locator):
-        log.info('等待元素: {}消失不可见'.format(locator))
+    def wait_element_not_visible(self, model, locator):
+        log.info('等待页面:{}元素: {}不可见'.format(model, locator))
         try:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
@@ -75,16 +75,16 @@ class BasicPage:
                 ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
-            log.info("元素已经消失不见,共计等待:{}秒".format(wait_time))
+            log.info('页面{}上的元素{}已不可见,共计等待:{}秒'.format(model, locator, wait_time))
         except TimeoutException as e:
             # 获取超时时间戳
             tag_time = time.time()
             # 截图并且保存
             self.save_webimg(tag_time=tag_time)
-            log.error("等待元素超时,页面已经截图并且保存文件名:{}".format(tag_time))
+            log.error("页面:{},等待元素不可见{}超时".format(model, locator))
             raise e
         except InvalidSelectorException as e:
-            log.error("等待或定位表达式异常\n {}".format(e))
+            log.error("页面:{},元素未不可见或定位表达式:{}异常\n {}".format(model, locator, e))
 
     # 定位元素
     def find_element(self, model, locator, mode='visible'):
@@ -102,7 +102,7 @@ class BasicPage:
         elif mode == 'exist':
             self.wait_element_exist(locator)
         else:
-            log.error('type参数传值异常,入参值为：{}'.format(mode))
+            log.error('定位{}页面的元素:{},type参数传值异常,入参值为：{}'.format(model, locator, mode))
         try:
             log.info('正在查找{}页面属性为: {} 的元素'.format(model, locator))
             # 元素定位传入动态参数
@@ -112,8 +112,8 @@ class BasicPage:
             # 获取超时时间戳
             tag_time = time.time()
             # 截图并且保存
+            log.error("页面:{},定位元素:{}失败".format(model, locator))
             self.save_webimg(tag_time=tag_time)
-            log.error("查找元素失败,页面已经截图并且保存文件名:{}".format(tag_time))
             raise e
 
     # 定位一组元素
@@ -131,7 +131,7 @@ class BasicPage:
         elif mode == 'exist':
             self.wait_element_exist(locator)
         else:
-            log.error('type参数传值异常,入参值为：{}'.format(mode))
+            log.error('定位{}页面的元素:{},type参数传值异常,入参值为：{}'.format(model, locator, mode))
         try:
             log.info('正在查找{}页面属性为: {} 的元素'.format(model, locator))
             # 元素定位传入动态参数
@@ -141,8 +141,8 @@ class BasicPage:
             # 获取超时时间戳
             tag_time = time.time()
             # 截图并且保存
+            log.error("页面:{},查找元素组:{}失败".format(model, locator))
             self.save_webimg(tag_time=tag_time)
-            log.error("查找元素组失败,页面已经截图并且保存文件名:{}".format(tag_time))
             raise e
 
     # 将等待操作的元素移动到可见区域
@@ -153,7 +153,7 @@ class BasicPage:
         :param alignment 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
         :param element 需要可见的元素
         '''
-        log.info('--将{}页面的元素:{}移动至浏览器可见区域'.format(model, locator))
+        log.info('将{}页面的元素:{}移动至浏览器可见区域'.format(model, locator))
         # 将元素移动到可见区域
         try:
             self.driver.execute_script('arguments[0].scrollIntoView({0});'.format(alignment), element)
@@ -162,7 +162,7 @@ class BasicPage:
             tag_time = time.time()
             # 截图并且保存
             self.save_webimg(tag_time=tag_time)
-            log.error("移动元素失败,页面已经截图并且保存文件名:{}}".format(tag_time))
+            log.error("{}页面的元素移动失败,页面已经截图并且保存文件名:{}}".format(model, tag_time))
             raise e
 
     # 点击元素
@@ -179,10 +179,10 @@ class BasicPage:
             log.info('点击操作:{}页面下的属性为: {}的元素'.format(model, locator))
             element.click()
         except Exception:
-            log.error('页面{}的属性: {} 点击失败请检查'.format(model, locator))
             # 获取点击失败时候的时间戳并且截图
             tag_time = time.time()
             self.save_webimg(tag_time)
+            log.error('页面{}的属性: {} 点击失败'.format(model, locator))
             raise
 
     # 获取当前页面的句柄
@@ -202,8 +202,22 @@ class BasicPage:
         self.driver.switch_to.window(new[-1])
 
     # 输入文本内容
-    def input_text(self):
-        pass
+    def input_text(self, model, locator, content, mode='visible', make_ele_visible=False):
+        log.info('尝试在:{}页面的:{}元素中输入文本内容{}'.format(model, locator, content))
+        element = self.find_element(model, locator, mode)
+        if make_ele_visible is True:
+            # 代码执行比页面渲染速度快 这里放0.5秒等待页面渲染
+            time.sleep(0.5)
+            self.make_element_visible(model=model, locator=locator, element=element)
+        try:
+            log.info('输入操作:{}页面下的属性为:{}的元素,输入内容为'.format(model, locator, content))
+            element.send_keys(content)
+        except Exception:
+            # 获取点击失败时候的时间戳并且截图
+            tag_time = time.time()
+            self.save_webimg(tag_time)
+            log.error('页面{}的属性: {} 输入操作失败'.format(model, locator))
+            raise
 
     # 获取元素的文本内容
 
