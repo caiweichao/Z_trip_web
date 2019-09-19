@@ -19,14 +19,14 @@ class BasicPage:
         self.driver.get('https://www.baidu.com')
 
     # 等待元素可见
-    def wait_element_visible(self, locator, timeout=Contans.basic_timeout,
-                             pollinginterval=Contans.basic_Polling_Interval):
+    def wait_element_visible(self, locator):
         log.info('等待元素: {}可见'.format(locator))
         try:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
             # 默认超时等待时间为30秒,间隔0.5秒轮询一次可以根据配置文件修改超时时间和轮询时间
-            WebDriverWait(self.driver, timeout=timeout, poll_frequency=pollinginterval).until(
+            WebDriverWait(self.driver, timeout=Contans.basic_timeout,
+                          poll_frequency=Contans.basic_Polling_Interval).until(
                 ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
@@ -42,14 +42,14 @@ class BasicPage:
             log.error("等待或定位表达式异常\n {}".format(e))
 
     # 等待元素存在
-    def wait_element_exist(self, locator, timeout=Contans.basic_timeout,
-                           pollinginterval=Contans.basic_Polling_Interval):
+    def wait_element_exist(self, locator):
         log.info('等待元素: {}存在'.format(locator))
         try:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
             # 默认超时等待时间为30秒,间隔0.5秒轮询一次可以根据配置文件修改超时时间和轮询时间
-            WebDriverWait(self.driver, timeout=timeout, poll_frequency=pollinginterval).until(
+            WebDriverWait(self.driver, timeout=Contans.basic_timeout,
+                          poll_frequency=Contans.basic_Polling_Interval).until(
                 ec.presence_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
@@ -65,13 +65,13 @@ class BasicPage:
             log.error("等待或定位表达式异常\n {}".format(e))
 
     # 等待元素不可见
-    def wait_element_not_visible(self, locator, timeout=Contans.basic_timeout,
-                                 pollinginterval=Contans.basic_Polling_Interval):
+    def wait_element_not_visible(self, locator):
         log.info('等待元素: {}消失不可见'.format(locator))
         try:
             # 获取开始等待时间具体到秒
             start_time = datetime.datetime.now().second
-            WebDriverWait(self.driver, timeout=timeout, poll_frequency=pollinginterval).until_not(
+            WebDriverWait(self.driver, timeout=Contans.basic_timeout,
+                          poll_frequency=Contans.basic_Polling_Interval).until_not(
                 ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
@@ -142,14 +142,39 @@ class BasicPage:
             tag_time = time.time()
             # 截图并且保存
             self.save_webimg(tag_time=tag_time)
-            log.error("查找元素失败,页面已经截图并且保存文件名:{}".format(tag_time))
+            log.error("查找元素组失败,页面已经截图并且保存文件名:{}".format(tag_time))
+            raise e
+
+    # 将等待操作的元素移动到可见区域
+    def make_element_visible(self, model, locator, element, alignment='false'):
+        '''
+        :param model: 传参定位的是哪个页面 字符串形式
+        :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
+        :param alignment 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
+        :param element 需要可见的元素
+        '''
+        log.info('--将{}页面的元素:{}移动至浏览器可见区域'.format(model, locator))
+        # 将元素移动到可见区域
+        try:
+            self.driver.execute_script('arguments[0].scrollIntoView({0});'.format(alignment), element)
+        except Exception as e:
+            # 获取超时时间戳
+            tag_time = time.time()
+            # 截图并且保存
+            self.save_webimg(tag_time=tag_time)
+            log.error("移动元素失败,页面已经截图并且保存文件名:{}}".format(tag_time))
             raise e
 
     # 点击元素
-    def click_element(self, model, locator, mode='visible'):
+    def click_element(self, model, locator, mode='visible', make_ele_visible=False):
         log.info('尝试点击:{}页面,属性为{}的元素'.format(model, locator))
         # 查找需要点击的元素
         element = self.find_element(model, locator, mode)
+        # 通过参数判断是否需要移动元素
+        if make_ele_visible is True:
+            # 代码执行比页面渲染速度快 这里放0.5秒等待页面渲染
+            time.sleep(0.5)
+            self.make_element_visible(model=model, locator=locator, element=element)
         try:
             log.info('点击操作:{}页面下的属性为: {}的元素'.format(model, locator))
             element.click()
@@ -160,13 +185,27 @@ class BasicPage:
             self.save_webimg(tag_time)
             raise
 
+    # 获取当前页面的句柄
+    def get_handles(self):
+        # 获取当前页面的句柄
+        get_handle = self.driver.window_handles
+        return get_handle
+
+    # 浏览器页面切换--通过切换句柄实现切换到正在使用的页面上
+    def swich_window(self, old_handle):
+        # 智能等待最新的窗口出现
+        WebDriverWait(self.driver, timeout=Contans.basic_timeout, poll_frequency=Contans.basic_Polling_Interval).until(
+            ec.new_window_is_opened(old_handle))
+        # 调用获取句柄的方法拿到最新打开的标签页的句柄
+        new = self.get_handles()
+        # 切换到最新页面因为时最新所以直接使用下标 -1 就行
+        self.driver.switch_to.window(new[-1])
+
     # 输入文本内容
     def input_text(self):
         pass
 
     # 获取元素的文本内容
-
-    # 句柄切换
 
     # 异常截图并且存储
     def save_webimg(self, tag_time):
