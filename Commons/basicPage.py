@@ -15,8 +15,6 @@ import datetime
 class BasicPage:
     def __init__(self, driver):
         self.driver = driver
-        self.driver = webdriver.Chrome()
-        self.driver.get('https://www.baidu.com')
 
     # 等待元素可见
     def wait_element_visible(self, model, locator):
@@ -92,7 +90,7 @@ class BasicPage:
         :param model: 传参定位的是哪个页面 字符串形式
         :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
         :param mode: visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
-        :return:
+        :return: 返回获取到的元素定位
         """
         # 判断元素定位使用的是那种等待方式
         if mode == 'visible':
@@ -141,14 +139,14 @@ class BasicPage:
             # 获取超时时间戳
             tag_time = time.time()
             # 截图并且保存
-            log.error("页面:{},查找元素组:{}失败".format(model, locator))
             self.save_webimg(tag_time=tag_time)
+            log.error("页面:{},查找元素组:{}失败".format(model, locator))
             raise e
 
     # 将等待操作的元素移动到可见区域
     def make_element_visible(self, model, locator, element, alignment='false'):
-
         '''
+
         :param model: 传参定位的是哪个页面 字符串形式
         :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
         :param alignment 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
@@ -163,11 +161,20 @@ class BasicPage:
             tag_time = time.time()
             # 截图并且保存
             self.save_webimg(tag_time=tag_time)
-            log.error("{}页面的元素移动失败,页面已经截图并且保存文件名:{}}".format(model, tag_time))
+            log.error("{}页面的元素:{}移动失败}".format(model, locator))
             raise e
 
     # 点击元素
-    def click_element(self, model, locator, mode='visible', make_ele_visible=False):
+    def click_element(self, model, locator, mode='visible', alignment='false', make_ele_visible=False):
+        '''
+
+        :param model: 传参定位的是哪个页面 字符串形式
+        :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
+        :param mode: visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :param make_ele_visible: 这里是布尔值 传入True 表示需要让元素滚动到页面可见区域 False 表示不用
+        :param alignment 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
+        :return: 方法无返回值
+        '''
         log.info('尝试点击:{}页面,属性为{}的元素'.format(model, locator))
         # 查找需要点击的元素
         element = self.find_element(model, locator, mode)
@@ -175,7 +182,7 @@ class BasicPage:
         if make_ele_visible is True:
             # 代码执行比页面渲染速度快 这里放0.5秒等待页面渲染
             time.sleep(0.5)
-            self.make_element_visible(model=model, locator=locator, element=element)
+            self.make_element_visible(model=model, locator=locator, element=element, alignment=alignment)
         try:
             log.info('点击操作:{}页面下的属性为: {}的元素'.format(model, locator))
             element.click()
@@ -188,12 +195,19 @@ class BasicPage:
 
     # 获取当前页面的句柄
     def get_handles(self):
+        '''
+        :return: 方法返回值当前获取到的句柄值
+        '''
         # 获取当前页面的句柄
         get_handle = self.driver.window_handles
         return get_handle
 
     # 浏览器页面切换--通过切换句柄实现切换到正在使用的页面上
     def swich_window(self, old_handle):
+        '''
+        :param old_handle: 传入之前获取的句柄的值
+        :return:
+        '''
         # 智能等待最新的窗口出现
         WebDriverWait(self.driver, timeout=Contans.basic_timeout, poll_frequency=Contans.basic_Polling_Interval).until(
             ec.new_window_is_opened(old_handle))
@@ -203,13 +217,23 @@ class BasicPage:
         self.driver.switch_to.window(new[-1])
 
     # 输入文本内容
-    def input_text(self, model, locator, content, mode='visible', make_ele_visible=False):
+    def input_text(self, model, locator, content, mode='visible', alignment='false', make_ele_visible=False):
+        '''
+
+        :param model: 传入字符串 代表那个页面
+        :param locator: 传入元素定位表达式
+        :param content: 传入输入的文本内容
+        :param mode:  visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :param alignment: 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
+        :param make_ele_visible: 这里是布尔值 传入True 表示需要让元素滚动到页面可见区域 False 表示不用
+        :return: 方法无返回值
+        '''
         log.info('尝试在:{}页面的:{}元素中输入文本内容{}'.format(model, locator, content))
         element = self.find_element(model, locator, mode)
         if make_ele_visible is True:
             # 代码执行比页面渲染速度快 这里放0.5秒等待页面渲染
             time.sleep(0.5)
-            self.make_element_visible(model=model, locator=locator, element=element)
+            self.make_element_visible(model=model, locator=locator, alignment=alignment, element=element)
         try:
             log.info('输入操作:{}页面下的属性为:{}的元素,输入内容为'.format(model, locator, content))
             element.send_keys(content)
@@ -220,7 +244,80 @@ class BasicPage:
             log.error('页面{}的属性: {} 输入操作失败'.format(model, locator))
             raise
 
+    # 获取元素的属性
+    def get_element_attr(self, model, locator, attribute='textContent', mode='visible', alignment='false',
+                         make_ele_visible=False):
+        '''
+
+        :param model: 传入字符串 代表那个页面
+        :param locator: 传入元素定位表达式
+        :param attribute: 默认 'textContent' 获取文本内容 'innerHTML' 获取元素内的全部HTML 'outerHTML'  获取包含选中元素的HTML
+        :param mode: visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :param alignment: 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
+        :param make_ele_visible: 这里是布尔值 传入True 表示需要让元素滚动到页面可见区域 False 表示不用
+        :return: 返回获取到的元素属性内容
+        '''
+        log.info('尝试在:{}页面的:{}元素中获取元素属性'.format(model, locator))
+        element = self.find_element(model=model, locator=locator, mode=mode)
+        if make_ele_visible is True:
+            time.sleep(0.5)
+            self.make_element_visible(model=model, locator=locator, alignment=alignment, element=element)
+        try:
+            log.info('属性获取操作:{}页面下的属性为:{}的元素的{}'.format(model, locator, attribute))
+            return element.get_attribute(attribute)
+        except Exception:
+            # 获取点击失败时候的时间戳并且截图
+            tag_time = time.time()
+            self.save_webimg(tag_time)
+            log.error('页面{}的属性: {} 获取属性操作失败'.format(model, locator))
+            raise
+
     # 获取元素的文本内容
+    def get_element_text(self, model, locator, mode='visible', alignment='false', make_ele_visible=False):
+        '''
+
+        :param model: 传入字符串 代表那个页面
+        :param locator:  传入元素定位表达式
+        :param mode: visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :param alignment: 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
+        :param make_ele_visible: 这里是布尔值 传入True 表示需要让元素滚动到页面可见区域 False 表示不用
+        :return: 返回获取到的元素文本内容
+        '''
+        log.info('尝试在:{}页面的:{}元素中获取文本内容'.format(model, locator))
+        element = self.find_element(model=model, locator=locator, mode=mode)
+        if make_ele_visible is True:
+            time.sleep(0.5)
+            self.make_element_visible(model=model, locator=locator, alignment=alignment, element=element)
+        try:
+            log.info('文本获取操作:{}页面下的属性为:{}的元素的文本内容'.format(model, locator))
+            return element.text
+        except Exception:
+            # 获取点击失败时候的时间戳并且截图
+            tag_time = time.time()
+            self.save_webimg(tag_time)
+            log.error('页面{}的元素: {} 获取文本操作失败'.format(model, locator))
+            raise
+
+    # 处理页面的alert
+    def dispose_alert(self, action):
+        '''
+
+        :param action: 参数为 accept 点击alert的确定 dismiss点击alert的取消
+        :return: 返回alert的文本内容 可能有些用例需要用这个参数去校验
+        '''
+        # 等待alert出现再去操作
+        WebDriverWait(self.driver, Contans.basic_timeout, Contans.basic_Polling_Interval).until(ec.alert_is_present())
+        alert = self.driver.switch_to.alert
+        # 尝试点击alert
+        try:
+            if action == 'accept':
+                alert.accept()
+            elif action == 'dismiss':
+                alert.dismiss()
+            return alert.text
+        except Exception as e:
+            log.error('alert 处理参数错误请检查')
+            raise e
 
     # 异常截图并且存储
     def save_webimg(self, tag_time):
