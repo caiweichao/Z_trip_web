@@ -38,3 +38,6 @@ log_time = 7
 basic_timeout = 30
 # 寻找元素间隔时间
 basic_Polling_Interval = 0.5
+
+# ----------测试基础数据------------------
+url = "https://www/z-trip.cn"

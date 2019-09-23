@@ -7,14 +7,16 @@
 2.测试的函数或者测试类命名规则为test_xxx
 3.测试类命名为Testxxx
 
-
-
 requirements文件管理
 1.定期执行命令 pip freeze>requirements.txt
-
-
 
 执行用例生成报告命令
 1.pytest -s -q —-alluredir report
 2.allure generate directory-with-results/ -o directory-with-report --clean
 3.allure generate report/ -o report/html --clean
+
+#pytest使用注意事项
+
+
+
+#allure使用注意事项

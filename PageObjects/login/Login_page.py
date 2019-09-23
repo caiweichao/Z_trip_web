@@ -4,10 +4,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 from Commons.basicPage import BasicPage
-from PageLocators.login_page_element import login_page_element as ele
+from locator_and_datas.login_page_locator_and_data import login_page_element_and_data as ele
 
 
-class loginPage(BasicPage):
+class login_page(BasicPage):
 
     # 点击首页登陆按钮
     def click_login(self):
