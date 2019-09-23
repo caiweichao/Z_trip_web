@@ -40,4 +40,4 @@ basic_timeout = 30
 basic_Polling_Interval = 0.5
 
 # ----------测试基础数据------------------
-url = "https://www/z-trip.cn"
+url = "https://www.z-trip.cn"
