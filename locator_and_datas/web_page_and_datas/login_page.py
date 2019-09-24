@@ -1,5 +1,8 @@
 from selenium.webdriver.common.by import By
 
+# 页面描述
+welcome_page = '欢迎页'
+describe = "登录页面"
 # -------------定位表达式---------------------
 # 首页立即登陆按钮
 index_login = (By.XPATH, '//a[@id="btn-login"]')

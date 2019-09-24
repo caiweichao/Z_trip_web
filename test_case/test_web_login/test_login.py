@@ -1,5 +1,5 @@
-from PageObjects.login.Login_page import login_page
-from locator_and_datas import login_page_element_and_data as data
+from PageObjects.web_PageObject.login_page import login_page
+from locator_and_datas.web_page_and_datas import login_page as data
 import pytest
 
 

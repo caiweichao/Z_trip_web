@@ -4,15 +4,11 @@ from Commons.Logs import log
 from Commons.LogManagement import LogManagement
 from Commons import Contans
 from selenium.common.exceptions import *
-from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.common.by import By
 import time
 import datetime
-import pytest
 import allure
-import allure_pytest
 
 
 class BasicPage:
@@ -31,7 +27,7 @@ class BasicPage:
                 ec.visibility_of_element_located(locator))
             # 计算共计等待时间
             wait_time = datetime.datetime.now().second - start_time
-            log.info('页面{}上的元素{}已可见,共计等待:{}秒'.format(model, locator, wait_time))
+            log.info('页面：{}上的元素{}已可见,共计等待:{}秒'.format(model, locator, wait_time))
         except TimeoutException as e:
             # 获取超时时间戳
             tag_time = time.time()
@@ -238,7 +234,7 @@ class BasicPage:
             time.sleep(0.5)
             self.make_element_visible(model=model, locator=locator, alignment=alignment, element=element)
         try:
-            log.info('输入操作:{}页面下的属性为:{}的元素,输入内容为'.format(model, locator, content))
+            log.info('输入操作:{}页面下的属性为:{}的元素,输入内容为{}'.format(model, locator, content))
             element.send_keys(content)
         except Exception:
             # 获取点击失败时候的时间戳并且截图
