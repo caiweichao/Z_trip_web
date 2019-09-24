@@ -12,8 +12,10 @@ conf_dir = os.path.join(base_dir, 'Conf')
 datas_dir = os.path.join(base_dir, 'TestData')
 # Logs文件夹路径
 logs_dir = os.path.join(base_dir, 'Logs')
-# 截图存储文件夹路径
-pt_log = os.path.join(logs_dir, 'PrintscreenLog')
+# 运行异常截图存储文件夹路径
+pt_error_log = os.path.join(logs_dir, 'PrintscreenLog/error_img')
+# 用例执行完成后截图存储文件夹路径
+pt_report_log = os.path.join(logs_dir, 'PrintscreenLog/case_img')
 # 日志文件夹路径
 text_log = os.path.join(logs_dir, 'TextLog')
 

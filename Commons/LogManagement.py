@@ -26,3 +26,5 @@ class LogManagement:
             # 判断文件夹是不是七天之前创建的如果是就删除
             if int(folder) < int(self.get_current_day()) - Contans.log_time:
                 shutil.rmtree(os.path.join(logs_path, folder))
+if __name__ == '__main__':
+    pass

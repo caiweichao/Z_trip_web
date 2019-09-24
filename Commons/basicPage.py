@@ -10,6 +10,9 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 import time
 import datetime
+import pytest
+import allure
+import allure_pytest
 
 
 class BasicPage:
@@ -199,8 +202,8 @@ class BasicPage:
         :return: 方法返回值当前获取到的句柄值
         '''
         # 获取当前页面的句柄
-        get_handle = self.driver.window_handles
-        return get_handle
+        handles = self.driver.window_handles
+        return handles
 
     # 浏览器页面切换--通过切换句柄实现切换到正在使用的页面上
     def swich_window(self, old_handle):
@@ -322,7 +325,7 @@ class BasicPage:
     # 异常截图并且存储
     def save_webimg(self, tag_time):
         # 创建图片存储文件夹如果存在就不创建,并且删除七天之前的图片文件夹
-        imgdir = LogManagement().get_log_dir(logs_path=Contans.pt_log)
+        imgdir = LogManagement().get_log_dir(logs_path=Contans.pt_error_log)
         # 图片文件名称= 文件夹路径+模块名称_当前时间的时间戳.png
         img_path = imgdir + "/{}.png".format(tag_time)
         try:
@@ -333,6 +336,35 @@ class BasicPage:
             log.error('截图失败请检查\n{}'.format(e))
             raise e
         return img_path
+
+    # 用例执行完毕截图
+    def save_img_case(self):
+        with allure.step('测试结果截图'):
+            # 创建图片存储文件夹如果存在就不创建,并且删除七天之前的图片文件夹
+            img_dir = LogManagement().get_log_dir(logs_path=Contans.pt_report_log)
+            # 图片地址构建
+            img_path = img_dir + "/{}.png".format(time.time())
+            # 尝试截图
+            try:
+                # 尝试截图
+                self.driver.save_screenshot(img_path)
+                log.info('用例执行完成，截图成功,文件名称为: {} '.format(img_path))
+                return img_path
+            except Exception as e:
+                log.error('截图失败请检查\n{}'.format(e))
+                raise e
+
+    # 将case的截图保存到allure报告中
+    def allure_img(self):
+        try:
+            log.info('尝试将测试结果图片存入allure报告')
+            # 读取测试结果图片
+            file = open(self.save_img_case(), 'rb').read()
+            # 将图片加入allure报告中
+            allure.attach(file, '测试结果截图', allure.attachment_type.PNG)
+        except Exception as e:
+            log.error('图片未能成功加入allure请检查\n{}'.format(e))
+            raise e
 
 
 if __name__ == '__main__':

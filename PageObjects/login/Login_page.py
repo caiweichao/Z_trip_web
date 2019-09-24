@@ -1,10 +1,5 @@
-from selenium import webdriver
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-
 from Commons.basicPage import BasicPage
-from locator_and_datas.login_page_locator_and_data import login_page_element_and_data as ele
+from locator_and_datas import login_page_element_and_data as ele
 
 
 class login_page(BasicPage):
