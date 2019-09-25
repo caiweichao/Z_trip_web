@@ -14,6 +14,8 @@ import allure
 class BasicPage:
     def __init__(self, driver):
         self.driver = driver
+        from selenium import webdriver
+        self.driver = webdriver.Chrome()
 
     # 等待元素可见
     def wait_element_visible(self, model, locator):
@@ -145,7 +147,6 @@ class BasicPage:
     # 将等待操作的元素移动到可见区域
     def make_element_visible(self, model, locator, element, alignment='false'):
         '''
-
         :param model: 传参定位的是哪个页面 字符串形式
         :param locator: 元素的定位表达式 例:(By.xx,'定位表达式')
         :param alignment 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
@@ -296,6 +297,54 @@ class BasicPage:
             self.save_webimg(tag_time)
             log.error('页面{}的元素: {} 获取文本操作失败'.format(model, locator))
             raise
+
+    # 复选框内容点击
+    def click_radios(self, model, locator, method, amount=None, mode='visible', alignment='false',
+                     make_ele_visible=False):
+        '''
+
+        :param model: 传入字符串 代表那个页面
+        :param locator: 传入元素定位表达式
+        :param mode:  visible(元素可见),notvisible(元素消失不可见), exist(元素存在)
+        :param amount: 传入复选项的数量 例子如果是3个选项就传入3
+        :param method: 选择对应的内容选择方式 all 点击复选框的全部内容 random 随机点击复选框的中的某一个选项 assign点击指定的某个复选项
+        :param alignment: 默认对其方式是元素和当前页面的底部对齐，可以传 alignment=''表示和顶部对齐
+        :param make_ele_visible: 这里是布尔值 传入True 表示需要让元素滚动到页面可见区域 False 表示不用
+        :return: 无返回值
+        '''
+        # 定位到复选框一定是一组元素
+        log.info('尝试在:{}页面的:{}元素上定位单选框'.format(model, locator))
+        elements = self.find_elements(model=model, locator=locator, mode=mode)
+        if make_ele_visible is True:
+            time.sleep(0.5)
+            self.make_element_visible(model=model, locator=locator, alignment=alignment, element=elements)
+        try:
+            log.info('点击方式为：{}'.format(method))
+            if method == 'all':
+                # 点击复选项中每一个元素
+                for ele in elements:
+                    ele.click()
+            # 随机点击复选项中的某一个内容
+            elif method == 'random':
+                # 导入随机数包
+                import random
+                # 生成指定范围之内的随机数作为需要点击的radio
+                num = random.randint(0, amount-1)
+                elements[num].click()
+            # 点击复选框中指定位置的选项
+            elif method == 'assign':
+                elements[amount-1].click()
+            else:
+                log.error('点击方式输入错误，请检查')
+        except Exception as e:
+            # 获取点击失败时候的时间戳并且截图
+            tag_time = time.time()
+            self.save_webimg(tag_time)
+            log.error('页面{}的元素: {} 复选框点击操作失败'.format(model, locator))
+            raise e
+
+    # 判断元素是否被勾选
+    # 点击下拉菜单
 
     # 处理页面的alert
     def dispose_alert(self, action):
