@@ -4,8 +4,10 @@ from selenium.webdriver.common.by import By
 welcome_page = '欢迎'
 describe = "登录"
 # -------------定位表达式---------------------
-# 首页立即登陆按钮
+# 正式环境首页立即登陆按钮
 element_index_login = (By.XPATH, '//a[@id="btn-login"]')
+# sit、uat环境首页立即登陆按钮
+element_test_index_login = (By.XPATH, '//a[@class="login"]')
 # 用户登陆页面用户名
 element_username = (By.XPATH, '//input[@name="username"]')
 # 用户登陆页面密码

@@ -36,3 +36,11 @@ class ConfigLoader:
     def getfloat(self, section, option):  # 返回float类型的值
         # 根据section，option 来取到配置的值
         return self.conf.getfloat(section, option)
+
+    def get_basic_conf(self):
+        self.conf.read(filenames=Contans.global_conf, encoding='utf-8')
+        return self.get('env', 'profile')
+
+if __name__ == '__main__':
+    X=ConfigLoader().get_basic_conf()
+    print(X)

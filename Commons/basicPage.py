@@ -15,8 +15,7 @@ import allure
 class BasicPage:
     def __init__(self, driver):
         self.driver = driver
-        from selenium import webdriver
-        self.driver = webdriver.Chrome()
+
 
     # 等待元素可见
     def wait_element_visible(self, model, locator):

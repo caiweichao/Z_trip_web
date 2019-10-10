@@ -1,13 +1,17 @@
 from Commons.basicPage import BasicPage
 from locator_and_datas.web_page_and_datas import login_page as login
-
+from Commons.Config import ConfigLoader
 
 class login_page(BasicPage):
 
     # 点击首页登陆按钮
     def click_login(self):
         handles = self.get_handles()
-        self.click_element(login.welcome_page, login.element_index_login)
+        if ConfigLoader().get_basic_conf() == 'PRO':
+            #如果配置是正式环境执行这行代码
+            self.click_element(login.welcome_page, login.element_index_login)
+        else:
+            self.click_element(login.welcome_page, login.element_test_index_login)
         return handles
 
     # 切换到账号密码登陆页面
