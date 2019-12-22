@@ -8,11 +8,11 @@ element_Total_travel_expenses = (By.XPATH, '//p[text()="差旅总支出"]//paren
 # 订单类型TAB-国内机票
 element_content_filght = (By.XPATH, '//span[text()="国内机票"]')
 # TAV-订单类型
-element_order_type = (By.XPATH,'//div[@class="nav-text ivu-tabs-nav"]//*[text()=" 订单类型 "]')
+element_order_type = (By.XPATH,'//div[@class="ivu-tabs-nav-scroll"]//*[text()=" 订单类型 "]')
 # TAB-出行类别
-element_tab_Travel_category = (By.XPATH, '//div[@class="nav-text ivu-tabs-nav"]//*[text()=" 出行类别 "]')
+element_tab_Travel_category = (By.XPATH, '//div[@class="ivu-tabs-nav-scroll"]//*[text()=" 出行类别 "]')
 # TAB-订单类型
-element_tab_order = (By.XPATH, '//div[@class="nav-text ivu-tabs-nav"]//*[text()=" 订单类型 "]')
+element_tab_order = (By.XPATH, '//div[@class="ivu-tabs-nav-scroll"]//*[text()=" 订单类型 "]')
 # 出行类别表格标题
 element_Travel_category = (By.XPATH, '//div[@class="ivu-table-cell"]//span[text()="出行类别"]')
 # TAB-下级单位

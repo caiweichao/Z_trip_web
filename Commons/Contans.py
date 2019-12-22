@@ -7,7 +7,7 @@ import os
 # 项目的根目录
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Conf文件夹路径
-conf_dir = os.path.join(base_dir, 'Conf')
+conf_dir = os.path.join(base_dir, 'Confs')
 # TestDatas文件夹路径
 datas_dir = os.path.join(base_dir, 'TestData')
 # Logs文件夹路径

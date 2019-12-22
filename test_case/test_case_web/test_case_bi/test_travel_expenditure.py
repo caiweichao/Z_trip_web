@@ -12,7 +12,7 @@ class Test_travel_expenditure():
         indexPage(login_one).click_Travel_expenditure()
         travel_expenditure(login_one).get_conntent_flight()
         with allure.step('开始进行校验差旅总支出金额'):
-            assert travel_expenditure(login_one).get_Total_travel_expenses() == '0'
+            assert travel_expenditure(login_one).get_Total_travel_expenses() == '9504.5'
         travel_expenditure(login_one).allure_img()
 
     @allure.story('点击出行类别tab')
@@ -32,7 +32,7 @@ class Test_travel_expenditure():
     @allure.story('查询上个月的数据')
     def test_Query_the_previous_month_data(self,login_one):
         import time
-        time.sleep(1)
+        time.sleep(15)
         travel_expenditure(login_one).click_order_type()
         travel_expenditure(login_one).query_the_previous_month_data()
         travel_expenditure(login_one).click_quert()
