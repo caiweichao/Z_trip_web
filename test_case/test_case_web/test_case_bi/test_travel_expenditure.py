@@ -38,7 +38,7 @@ class Test_travel_expenditure():
         travel_expenditure(login_one).click_quert()
         travel_expenditure(login_one).get_conntent_flight()
         with allure.step('开始进行校验差旅总支出金额'):
-            assert travel_expenditure(login_one).get_Total_travel_expenses() != '0'
+            assert travel_expenditure(login_one).get_Total_travel_expenses() == '0'
         travel_expenditure(login_one).allure_img()
 
 

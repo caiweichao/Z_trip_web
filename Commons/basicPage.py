@@ -385,8 +385,8 @@ class BasicPage:
             log.error('页面{}的元素: {} 下拉框操作失败请检查'.format(model, locator))
             raise
 
-            # 处理页面的alert
 
+    # 处理页面的alert
     def dispose_alert(self, action):
         '''
         :param action: 参数为 accept 点击alert的确定 dismiss点击alert的取消
@@ -439,11 +439,11 @@ class BasicPage:
                 raise e
 
     # 将case的截图保存到allure报告中
-    def allure_img(driver):
+    def allure_img(self):
         try:
             log.info('尝试将测试结果图片存入allure报告')
             # 读取测试结果图片
-            file = open(BasicPage(driver).save_img_case(), 'rb').read()
+            file = open(self.save_img_case(), 'rb').read()
             # 将图片加入allure报告中
             allure.attach(file, '测试结果截图', allure.attachment_type.PNG)
         except Exception as e:

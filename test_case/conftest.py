@@ -17,7 +17,7 @@ def open_windows():
     yield driver
     login_page(driver).allure_img()
     # 一个用例执行完毕后执行yield后的代码
-    driver.close()
+    driver.quit()
 
 
 @pytest.fixture()
