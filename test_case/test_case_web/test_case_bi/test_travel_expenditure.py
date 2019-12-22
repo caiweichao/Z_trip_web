@@ -21,7 +21,7 @@ class Test_travel_expenditure():
         with allure.step('开始进行校验出行类别表单金额'):
             assert travel_expenditure(login_one).get_Travel_category() =='出行类别'
         travel_expenditure(login_one).allure_img()
-
+#用例有问题需要调整
     @allure.story('点击下级单位tab')
     def test_click_tab_subordinate_unit(self,login_one):
         travel_expenditure(login_one).click_subordinate_unit()
