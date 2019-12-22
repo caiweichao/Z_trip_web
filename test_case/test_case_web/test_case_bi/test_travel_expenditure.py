@@ -2,6 +2,7 @@ import pytest
 import allure
 from PageObjects.web_PageObject.index_page import indexPage
 from PageObjects.web_PageObject.bi_system_page.Travel_expenditure_page import travel_expenditure
+import time
 
 @pytest.mark.usefixtures("login_one")
 @allure.feature('差旅支出统计页面用例集合')
