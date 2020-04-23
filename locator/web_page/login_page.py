@@ -20,7 +20,7 @@ element_error_msg = (By.XPATH, '//div[@id="msg-box"]')
 # -------------测试数据------------------------
 userName = 13248231369
 errorUsername = 132482313691
-pwd = 1995030226
+pwd = 'cai123456'
 errorPwd = 111111
 errorMsg = '用户名密码错误'
 # -------------测试sql------------------------

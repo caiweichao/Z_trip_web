@@ -17,6 +17,7 @@ class BasicPage:
         self.driver = driver
 
 
+
     # 等待元素可见
     def wait_element_visible(self, model, locator):
         log.info('等待页面:{}元素: {}可见'.format(model, locator))

@@ -1,5 +1,5 @@
 from Commons.basicPage import BasicPage
-from locator_and_datas.web_page_and_datas.bi_system_page import Travel_expenditure_page as data
+from locator.web_page.bi_system_page import Travel_expenditure_page as data
 from Commons import public_method
 
 
@@ -14,7 +14,7 @@ class travel_expenditure(BasicPage):
 
     # 点击订单类型标签
     def click_order_type(self):
-        self.click_element(model=data.describe,locator=data.element_order_type)
+        self.click_element(model=data.describe, locator=data.element_order_type)
 
     # 点击查询按钮
     def click_quert(self):
@@ -39,14 +39,11 @@ class travel_expenditure(BasicPage):
     def query_the_previous_month_data(self):
         # 如果当前月份大于一月就直接选中上个月
         if public_method.get_now_month() > 1:
-            self.click_element(model=data.describe,locator=data.element_Month_selector)
-            self.click_element(model=data.describe,locator=data.element_get_mouth(public_method.get_now_month() - 1))
-        else:
-            self.click_element(model=data.describe,locator=data.element_year_selector)
-            self.click_element(model=data.describe,locator=data.element_get_year(public_method.get_now_year() - 1))
             self.click_element(model=data.describe, locator=data.element_Month_selector)
+            self.click_element(model=data.describe, locator=data.element_get_mouth(public_method.get_now_month() - 1))
+        else:
+            self.click_element(model=data.describe, locator=data.element_year_selector)
+            self.input_text(model=data.describe, locator=data.element_get_year(public_method.get_now_year() - 1))
+            self.click_element(model=data.describe, locator=data.element_Month_selector)
+            # 如果是一月份就写死查询去年12月
             self.click_element(model=data.describe, locator=data.element_get_mouth(12))
-
-
-
-

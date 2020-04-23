@@ -37,9 +37,11 @@ log_time = 7
 
 # ----------BasicPage维护参数------------
 # 最大的等待时间
-basic_timeout = 30
+basic_timeout = 5
 # 寻找元素间隔时间
 basic_Polling_Interval = 0.5
+# 隐式等待时间
+all_timeout = 10
 
 # ----------测试基础数据------------------
 url = "https://www.z-trip.cn"

@@ -2,8 +2,7 @@ from Commons import Contans
 from Commons import LogManagement
 import logging
 import os
-import time
-import shutil
+
 
 '''
 #日志记录--记录用例名称，用例数据，用例返回值输出进入info文件

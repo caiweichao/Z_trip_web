@@ -16,7 +16,7 @@ element_tab_order = (By.XPATH, '//div[@class="ivu-tabs-nav-scroll"]//*[text()=" 
 # 出行类别表格标题
 element_Travel_category = (By.XPATH, '//div[@class="ivu-table-cell"]//span[text()="出行类别"]')
 # TAB-下级单位
-element_subordinate_unit = (By.XPATH, '//div[@class="nav-text ivu-tabs-nav"]//*[text()=" 下级单位 "]')
+element_subordinate_unit = (By.XPATH, '//*[text()=" 下级单位 "]')
 # 月份选择器
 element_Month_selector = (By.XPATH, '//div[@class="search-month ivu-date-picker"]//input')
 # 年份选择器

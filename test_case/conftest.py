@@ -4,7 +4,8 @@ from Commons import Contans
 from Commons.MysqlConnect import Mysql_Util
 from Commons.Config import ConfigLoader
 from PageObjects.web_PageObject.login_page import login_page
-from locator_and_datas.web_page_and_datas import login_page as data
+from locator.web_page import login_page as data
+from Commons.Contans import *
 
 
 @pytest.fixture()
@@ -12,6 +13,7 @@ from locator_and_datas.web_page_and_datas import login_page as data
 def open_windows():
     # 打开浏览器
     driver = webdriver.Chrome()
+    driver.implicitly_wait(Contans.all_timeout)
     driver.maximize_window()
     driver.get(url=Contans.url)
     yield driver
