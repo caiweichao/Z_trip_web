@@ -1,6 +1,6 @@
-from Commons.basicPage import BasicPage
-from locator.web_page import login_page as login
-from Commons.Config import ConfigLoader
+from utils.BasicPage import BasicPage
+from locator.web_locator import login_page as login
+from utils.Config import ConfigLoader
 import allure
 
 

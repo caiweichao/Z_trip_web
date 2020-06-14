@@ -1,6 +1,6 @@
-from Commons.basicPage import BasicPage
-from locator.web_page.bi_system_page import Travel_expenditure_page as data
-from Commons import public_method
+from utils.BasicPage import BasicPage
+from locator.web_locator.web_bi_locator import Travel_expenditure_page as data
+from utils import public_method
 
 
 class travel_expenditure(BasicPage):

@@ -1,5 +1,5 @@
-from Commons.basicPage import BasicPage
-from locator.web_page import index_page as index
+from utils.BasicPage import BasicPage
+from locator.web_locator import index_page as index
 import allure
 
 

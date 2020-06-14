@@ -1,10 +1,11 @@
 from PageObjects.web_PageObject.login_page import login_page
-from locator.web_page import login_page as data
+from locator.web_locator import login_page as data
 from PageObjects.web_PageObject.index_page import indexPage
-from locator.web_page import index_page as indexdata
-from Commons.Config import ConfigLoader
+from locator.web_locator import index_page as indexdata
+from utils.Config import ConfigLoader
 import pytest
 import allure
+
 
 
 def swich_to_handle(open_windows):
@@ -40,4 +41,8 @@ class Test_login():
         swich_to_handle(open_windows)
         login_page(open_windows).login(data.userName, data.pwd)
         indexPage(open_windows).click_logout_icon()
-        assert login_page(open_windows).get_element_text(data.describe, data.element_index_login) == '立即登录'
+        if ConfigLoader().get_basic_conf() == 'PRO':
+            assert login_page(open_windows).get_element_text(data.describe, data.element_index_login) == '立即登录'
+        else:
+            assert login_page(open_windows).get_element_text(data.describe,
+                                                             data.element_login_button_uat_test) == '企业登录'
